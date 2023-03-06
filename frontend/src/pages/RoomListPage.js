@@ -20,16 +20,17 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  Link,
 } from '@mui/material';
 // components
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+// import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 import { RoomListHead } from '../sections/@dashboard/room';
 // mock
-import USERLIST from '../_mock/user';
+// import USERLIST from '../_mock/user';
 import ROOMLIST from '../_mock/room';
 
 
@@ -37,6 +38,7 @@ import ROOMLIST from '../_mock/room';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
+  { id: 'type', label: 'Type', alignRight: false },
   { id: 'bookingStatus', label: 'Booking Status', alignRight: false },
   { id: 'checkinStatus', label: 'Check In Status', alignRight: false },
   { id: 'checkoutStatus', label: 'Check Out Status', alignRight: false },
@@ -180,7 +182,7 @@ export default function RoomListPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, bookingStatus, checkinStatus, checkoutStatus } = row;
+                    const { id, name, type, bookingStatus, checkinStatus, checkoutStatus } = row;
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
@@ -197,13 +199,23 @@ export default function RoomListPage() {
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{bookingStatus}</TableCell>
-
-                        <TableCell align="left">
-                          <Label color={(checkinStatus === 'Not Checked-in' && 'error') || 'success'}>{sentenceCase(checkinStatus)}</Label>
+                        <TableCell align="left">                          
+                          {type}
                         </TableCell>
 
-                        <TableCell align="left">{checkoutStatus}</TableCell>
+                        <TableCell align="left">                          
+                          <Label color={(bookingStatus === 'Not Booked' && 'error') || 'success'}>{sentenceCase(bookingStatus)}</Label>
+                        </TableCell>
+
+                        <TableCell align="left">
+                          {/* <Link> */}
+                          <Label color={(checkinStatus === 'Not Checked-in' && 'error') || 'success'}>{sentenceCase(checkinStatus)}</Label>
+                          {/* </Link> */}
+                        </TableCell>
+
+                        <TableCell align="left">
+                          <Label color={(checkoutStatus === 'Not Checked-out' && 'error') || 'success'}>{sentenceCase(checkoutStatus)}</Label>
+                        </TableCell>
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
@@ -248,7 +260,7 @@ export default function RoomListPage() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 25]}
             component="div"
             count={ROOMLIST.length}
             rowsPerPage={rowsPerPage}
